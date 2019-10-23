@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Memes</title>
+</head>
+
+<body onload="initCanvas()">
+    <header>
+        <nav>
+            <ul class="nav-ul">
+                <li><button>Gallery</button></li>
+                <li><button>About</button></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1 class="galley-header">select a template:</h1>
+        <section class="opening-gallery">
+        </section>
+        <section class="container hide">
+            <section class="canvas-container">
+                <canvas id="my-canvas" width="400" height="400">
+                    <!-- onmousedown="startDrag()"
+                    onmouseup="finishDrag()"
+                    onmousemove="drag(event.offsetX,event.offsetY,event)"
+                    onmouseleave="finishDraw()"
+                    ontouchstart="startDrag()"
+                    ontouchend="finishDrag()"
+                    ontouchmove="recoverOffsetValues(event)"
+                    > -->
+                    its 2019 plz use google chrome
+                </canvas>
+            </section>
+            <section class="panel">
+                <div class="actions">
+                    <button class="btn"><a class="download-link" onclick="downloadCanvas(this)"
+                            href="">Download</a></button>
+                    <input type="text" oninput="renderTxt(this.value)">
+                </div>
+                <div class="imgs hide"></div>
+            </section>
+        </section>
+    </main>
+    <footer>
+        <p>all rights bla bla</p>
+    </footer>
+    <script src="js/meme-service.js"></script>
+    <script src="js/meme-controller.js"></script>
+</body>
+
+</html>
