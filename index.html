@@ -9,7 +9,7 @@
     <title>Memes</title>
 </head>
 
-<body onload="initCanvas()">
+<body onload="initHomepage()">
     <header>
         <nav>
             <ul class="nav-ul">
@@ -19,36 +19,14 @@
         </nav>
     </header>
     <main>
+        <!-- on img click sshould save to link local storage  -->
         <h1 class="galley-header">select a template:</h1>
         <section class="opening-gallery">
-        </section>
-        <section class="container hide">
-            <section class="canvas-container">
-                <canvas id="my-canvas" width="400" height="400">
-                    <!-- onmousedown="startDrag()"
-                    onmouseup="finishDrag()"
-                    onmousemove="drag(event.offsetX,event.offsetY,event)"
-                    onmouseleave="finishDraw()"
-                    ontouchstart="startDrag()"
-                    ontouchend="finishDrag()"
-                    ontouchmove="recoverOffsetValues(event)"
-                    > -->
-                    its 2019 plz use google chrome
-                </canvas>
-            </section>
-            <section class="panel">
-                <div class="actions">
-                    <button class="btn"><a class="download-link" onclick="downloadCanvas(this)"
-                            href="">Download</a></button>
-                    <input type="text" oninput="renderTxt(this.value)">
-                </div>
-                <div class="imgs hide"></div>
-            </section>
-        </section>
     </main>
     <footer>
         <p>all rights bla bla</p>
     </footer>
+    <script src="js/utils.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-controller.js"></script>
 </body>

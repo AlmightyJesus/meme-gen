@@ -5,12 +5,13 @@ var gCtx;
 function initCanvas() {
     gCanvas = document.querySelector('#my-canvas');
     gCtx = gCanvas.getContext('2d')
-    renderImgs()
+    var imgUrl = loadImgUrl()
+    drawImg(imgUrl)
     renderGallery()
-    // resizeCanvas()
-    // drawImg(imgUrl)
-    // gCtx.globalCompositeOperation = 'destination-out'
+}
 
+function initHomepage() {
+    renderImgs()
 }
 
 
@@ -68,10 +69,8 @@ function renderImgs() {
 function onChooseImg(imgId) {
     var imgs = getImgs()
     var img = imgs.find(img => img.id === imgId)
-    drawImg(img.imgUrl)
-    document.querySelector('.container').classList.remove('hide')
-    document.querySelector('.opening-gallery').classList.add('hide')
-    // console.log(img.imgUrl);
+    saveImgUrl(img.imgUrl)
+    window.open('generator.html')
 }
 
 function renderTxt(txt, x, y) {

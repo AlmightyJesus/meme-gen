@@ -47,6 +47,14 @@ function createImg(imgUrl, keywords) {
     }
 }
 
+function saveImgUrl(imgUrl){
+saveToStorage('img-url',imgUrl)
+}
+
+function loadImgUrl(){
+    return loadFromStorage('img-url')
+}
+
 function getImgs() {
     return gImgs
 }
