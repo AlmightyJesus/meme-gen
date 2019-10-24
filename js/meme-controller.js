@@ -18,7 +18,7 @@ function initCanvas() {
     setInterval(() => {
         updateCanvas()
     }, 100)
-    selectInput()
+    showInput()
 }
 
 function setCtx() {
@@ -158,18 +158,18 @@ function changeSize(meme, action) {
     else meme.txts[meme.selectedTxtIdx].size -= 3
     var size = meme.txts[meme.selectedTxtIdx].size
     updateCanvas()
-    document.querySelector('.meme-txt').focus()
+    showInput()
 }
 
 function onAddTxt() {
     addTxt(gCtx, gCanvas)
-    selectInput()
+    showInput()
     updateCanvas()
 }
 
 function onSwitchTxt() {
     updateTxtIdx()
-    selectInput()
+    showInput()
 }
 
 function selectInput() {
@@ -178,6 +178,14 @@ function selectInput() {
     elInput.value = meme.txts[meme.selectedTxtIdx].line
     elInput.select()
 }
+
+function showInput() {
+    var meme = getgMeme()
+    var elInput = document.querySelector('.meme-txt')
+    elInput.value = meme.txts[meme.selectedTxtIdx].line
+
+}
+
 
 function onRemoveTxt() {
     removeTxt()
@@ -198,14 +206,14 @@ function changeAlignment(meme, action) {
     meme.txts[meme.selectedTxtIdx].align = action
     meme.txts[meme.selectedTxtIdx].locX = x
     updateCanvas()
-    document.querySelector('.meme-txt').focus()
+    showInput()
 }
 
 function changeFont(font) {
     var meme = getgMeme()
     meme.txts[meme.selectedTxtIdx].font = font
     updateCanvas()
-    selectInput()
+    showInput()
 
 }
 
@@ -219,35 +227,16 @@ function moveImg(meme, action) {
     updateCanvas()
 }
 
-// function setFontData(size, fontFamily) {
-//     var fontData = gCtx.font.split(' ')
-//     size = + fontData[0].slice(0, -2)
-//     fontFamily = fontData[1]
-
-//     gCtx.font = `${size}` 
-// }
+function moveToGallery(){
+    window.open('index.html')
+}
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// for later - to enable text click to select idx
+// for later - to enable text click to select idx and drag
 // function canvasClicked(ev) {
 //     var meme = getgMeme()
 //     // console.log(ev.clientX);
