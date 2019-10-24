@@ -21,7 +21,7 @@
     <main>
         <section class="container">
             <section class="canvas-container">
-                <canvas id="my-canvas" width="400" height="400">
+                <canvas id="my-canvas" width="100" height="100" onclick="canvasClicked(event)">
                     <!-- onmousedown="startDrag()"
                     onmouseup="finishDrag()"
                     onmousemove="drag(event.offsetX,event.offsetY,event)"
@@ -34,10 +34,37 @@
                 </canvas>
             </section>
             <section class="panel">
-                <div class="actions">
-                    <button class="btn"><a class="download-link" onclick="downloadCanvas(this)"
+                <input class="meme-txt" type="text" oninput="updateTxt(this.value)">
+
+                <div class="txt-mng-btns">
+                    <button class="btn"><img class="btn-img"
+                            src="img/icons/up-and-down-opposite-double-arrows-side-by-side.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" onclick="onAddTxt()" src="img/icons/add.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/trash.PNG" alt=""></button>
+                </div>
+                <div class="txt-edit-btns">
+                    <button class="btn"><img class="btn-img" onclick="handleEvent(this)" src="img/icons/increase font - icon.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/decrease font - icon.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/align-to-left.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/center-text-alignment.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/align-to-right.PNG" alt=""></button>
+                </div>
+                <div class="txt-design">
+                    <select class="font-family" name="">
+                        <option value="impact">Impact</option>
+                        <option value="arial">Arial</option>
+                        <option value="Verdana">Verdana</option>
+                    </select>
+                    <button class="btn"><img class="btn-img" src="img/icons/text stroke.PNG" alt=""></button>
+                    <button class="btn"><img class="btn-img" src="img/icons/paint-board-and-brush.PNG" alt=""></button>
+                </div>
+                <div class="stickers">
+
+                </div>
+                <div class="btns">
+                    <button class="btn share">share</button>
+                    <button class="btn download"><a class="download-link" onclick="downloadCanvas(this)"
                             href="">Download</a></button>
-                    <input type="text" oninput="renderTxt(this.value)">
                 </div>
                 <div class="imgs hide"></div>
             </section>
@@ -46,7 +73,7 @@
     <footer>
         <p>all rights bla bla</p>
     </footer>
-    <script src="js/utils.js"></script>
+    <script src="js/meme-utils.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-controller.js"></script>
 </body>
