@@ -22,7 +22,7 @@ function initCanvas() {
 }
 
 function setCtx() {
-    gCtx.textAlign = 'right'
+    gCtx.textAlign = 'center'
     gCtx.fillStyle = 'white'
     gCtx.lineWidth = '3'
     gCtx.font = '30px Impact'
@@ -126,8 +126,14 @@ function handleBtns(action) {
         case 'decrease':
             changeSize(meme, action)
             break;
-        case '':
-
+        case 'left':
+            changeAlignment(meme, action)
+            break;
+        case 'center':
+            changeAlignment(meme, action)
+            break;
+        case 'right':
+            changeAlignment(meme, action)
             break;
 
         default:
@@ -169,6 +175,22 @@ function selectInput() {
 
 function onRemoveTxt() {
     removeTxt()
+    updateCanvas()
+}
+
+function changeAlignment(meme, action) {
+    if (action === 'left') {
+        meme.txts[meme.selectedTxtIdx].align = 'left'
+        meme.txts[meme.selectedTxtIdx].locX = 50
+    }
+    if (action === 'center') {
+        meme.txts[meme.selectedTxtIdx].align = 'center'
+        meme.txts[meme.selectedTxtIdx].locX = gCanvas.width / 2
+    }
+    if (action === 'right') {
+        meme.txts[meme.selectedTxtIdx].align = 'right'
+        meme.txts[meme.selectedTxtIdx].locX = gCanvas.width - 50
+    }
     updateCanvas()
 }
 

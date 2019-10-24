@@ -6,15 +6,15 @@ var gMeme;
 function createImgs() {
     if (gImgs) gNextId = gImgs[gImgs.length - 1].id + 1;
     var imgs = [
-        createImg('img/img2.JPG', ['dance,', 'funny']),
-        createImg('img/9.JPG', ['baby,', 'funny', 'cruel']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny']),
-        createImg('img/meme1.JPG', ['matrix,', 'funny'])
+        createImg('img/img2.jpg', ['dance,', 'funny']),
+        createImg('img/9.jpg', ['baby,', 'funny', 'cruel']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny']),
+        createImg('img/meme1.jpg', ['matrix,', 'funny'])
 
     ]
     gImgs = imgs
@@ -41,21 +41,21 @@ function creategMeme(imgId, canvas) {
             [{
                 line: 'Enter text Here',
                 size,
-                align: 'left',
+                align: 'center',
                 color: 'white',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: 60,
-                locX: 55
+                locX: canvas.width / 2
             }, {
                 line: 'Enter text Here',
                 size,
-                align: 'left',
+                align: 'center',
                 color: 'white',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: canvas.height - 30,
-                locX: 55
+                locX: canvas.width / 2
             }]
     }
 }
@@ -80,12 +80,12 @@ function addTxt(ctx, canvas) {
     var newTxt = {
         line: 'Enter text Here',
         size,
-        align: ctx.textAlign,
+        align: 'center',
         color: 'white',
         font,
         lineWidth: ctx.lineWidth,
         locY,
-        locX: 55
+        locX: canvas.width / 2
     }
     gMeme.txts.push(newTxt)
     gMeme.selectedTxtIdx = txts.length - 1

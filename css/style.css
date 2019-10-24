@@ -207,7 +207,7 @@ footer p {
 .stickers {
     background-color: #fff;
     width: 80%;
-    height: 100px;
+    height: 80px;
 }
 
 @media screen and (max-width: 600px) {
