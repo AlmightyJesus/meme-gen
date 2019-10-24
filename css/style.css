@@ -27,8 +27,13 @@ main {
     flex-grow: 4;
 }
 
-.scroll{
-    
+.txt-mng-btns {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.scroll {
     overflow-y: scroll;
 }
 
@@ -44,6 +49,19 @@ footer p {
     padding: 10px;
 }
 
+@media screen and (max-width: 600px) {
+    main {
+        height: 80%;
+        padding: 5px;
+    }
+    header {
+        flex-grow: 2;
+    }
+    footer {
+        flex-grow: 2;
+    }
+}
+
 #my-canvas {
     border: 1px solid black;
 }
@@ -56,34 +74,59 @@ footer p {
     align-items: center;
 }
 
-.canvas-container{
+.canvas-container {
     width: 50%;
     height: 90%;
     padding: 0;
     border: 0;
-
 }
 
 .panel {
     width: 45%;
     height: 90%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
 }
 
-.txt-mng-btns{
-    width: 50%;
-    display: flex;
-    justify-content: center;
+.panel-item {}
+
+@media screen and (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+    .canvas-container {
+        width: 60%;
+        height: 50%;
+    }
+    .panel {
+        width: 60%;
+        height: 47%;
+    }
+    .panel-item {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
 }
+
+@media screen and (max-width: 400px) {
+    .canvas-container {
+        width: 80%;
+    }
+    .panel {
+        width: 80%;
+    }
+}
+
 .meme-txt {
     width: 70%;
     border: 0;
     border-radius: 10px;
     height: 30px;
+    text-align: center;
     outline: none;
 }
 
@@ -93,33 +136,89 @@ footer p {
     border-radius: 10px;
     margin: 5px;
     outline: none;
+    cursor: pointer;
 }
 
-.btn-img{
+.btn-img {
     width: 100%;
 }
 
-.share{
-    width: 5rem;
-}
-.download{
-    width: 5rem;
-
+.txt-mng-btns {
+    width: 50%;
+    display: flex;
+    justify-content: center;
 }
 
-.stickers{
+.share {
+    width: 5rem;
+    cursor: pointer;
+}
+
+.download {
+    width: 5rem;
+}
+
+.txt-design {
+    display: flex;
+    align-items: center;
+}
+
+.font-family {
+    height: 70%;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .meme-txt {
+        width: 100%;
+        margin-bottom: 3px;
+    }
+    .btn {
+        width: 2rem;
+        height: 2rem;
+        margin: 3px;
+        padding: 2px;
+    }
+    .txt-mng-btns {
+        width: 56%;
+        justify-content: space-between;
+    }
+    .share {
+        width: 5rem;
+    }
+    .download {
+        width: 5rem;
+    }
+    .font-family {
+        width: 56.5%;
+    }
+}
+
+.download-link:link {
+    text-decoration: none;
+    color: black;
+}
+
+.download-link:visited {
+    text-decoration: none;
+    color: black;
+}
+
+.stickers {
     background-color: #fff;
     width: 80%;
     height: 100px;
 }
 
-/* .arrows-btn{
-    background-image: url(../img/icons/up-and-down-opposite-double-arrows-side-by-side.png);
-    background-size: 40px 40px;
-} */
+@media screen and (max-width: 600px) {
+    .stickers {
+        height: 40px;
+        width: 100%;
+    }
+}
+
 .imgs {
     display: flex;
-    /* display: none; */
     flex: 0, 0, auto;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -128,14 +227,12 @@ footer p {
 .meme-gallery-img {
     max-width: 33%;
     max-height: 30%;
-    /* object-fit: contain; */
     flex-grow: 1;
     padding: 10px;
 }
 
 .meme-img {
     max-width: 20%;
-    /* max-height: 30%; */
     object-fit: contain;
     flex-grow: 1;
     padding: 10px;

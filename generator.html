@@ -34,31 +34,33 @@
                 </canvas>
             </section>
             <section class="panel">
-                <input class="meme-txt" type="text" oninput="updateTxt(this.value)">
+                <input class="meme-txt panel-item" type="text" oninput="updateTxt(this.value)">
 
-                <div class="txt-mng-btns">
-                    <button class="btn"><img class="btn-img"
+                <div class="txt-mng-btns panel-item">
+                    <button onclick="handleBtns('switch')" class="btn"><img class="btn-img"
                             src="img/icons/up-and-down-opposite-double-arrows-side-by-side.PNG" alt=""></button>
-                    <button class="btn"><img class="btn-img" onclick="onAddTxt()" src="img/icons/add.PNG" alt=""></button>
-                    <button class="btn"><img class="btn-img" src="img/icons/trash.PNG" alt=""></button>
+                    <button onclick="handleBtns('add')" class="btn"><img class="btn-img" src="img/icons/add.PNG"
+                            alt=""></button>
+                    <button onclick="handleBtns('remove')" class="btn"><img class="btn-img" src="img/icons/trash.PNG" alt=""></button>
                 </div>
-                <div class="txt-edit-btns">
-                    <button class="btn"><img class="btn-img" onclick="handleEvent(this)" src="img/icons/increase font - icon.PNG" alt=""></button>
-                    <button class="btn"><img class="btn-img" src="img/icons/decrease font - icon.PNG" alt=""></button>
+                <div class="txt-edit-btns panel-item">
+                    <button onclick="handleBtns('increase')" class="btn"><img class="btn-img"
+                            src="img/icons/increase font - icon.PNG" alt=""></button>
+                    <button onclick="handleBtns('decrease')" class="btn"><img class="btn-img" src="img/icons/decrease font - icon.PNG" alt=""></button>
                     <button class="btn"><img class="btn-img" src="img/icons/align-to-left.PNG" alt=""></button>
                     <button class="btn"><img class="btn-img" src="img/icons/center-text-alignment.PNG" alt=""></button>
                     <button class="btn"><img class="btn-img" src="img/icons/align-to-right.PNG" alt=""></button>
                 </div>
-                <div class="txt-design">
-                    <select class="font-family" name="">
-                        <option value="impact">Impact</option>
-                        <option value="arial">Arial</option>
+                <div class="txt-design panel-item">
+                    <select class="font-family" onchange="changeFont(this.value)" name="">
+                        <option value="Impact">Impact</option>
+                        <option value="Arial">Arial</option>
                         <option value="Verdana">Verdana</option>
                     </select>
                     <button class="btn"><img class="btn-img" src="img/icons/text stroke.PNG" alt=""></button>
                     <button class="btn"><img class="btn-img" src="img/icons/paint-board-and-brush.PNG" alt=""></button>
                 </div>
-                <div class="stickers">
+                <div class="stickers panel-item">
 
                 </div>
                 <div class="btns">

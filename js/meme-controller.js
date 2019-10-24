@@ -6,15 +6,26 @@ var gImg;
 function initCanvas() {
     var imgData = loadImgData()
     createImgs()
-    gMeme = creategMeme(imgData.id)
-
     gCanvas = document.querySelector('#my-canvas');
     gCtx = gCanvas.getContext('2d')
     for (let i = 0; i < 7; i++) {
         resizeCanvas()
     }
+    gMeme = creategMeme(imgData.id, gCanvas)
     drawImg(imgData.imgUrl)
     renderGallery()
+    setCtx()
+    setInterval(() => {
+        updateCanvas()
+    }, 100)
+    selectInput()
+}
+
+function setCtx() {
+    gCtx.textAlign = 'right'
+    gCtx.fillStyle = 'white'
+    gCtx.lineWidth = '3'
+    gCtx.font = '30px Impact'
 }
 
 function renderCanvas() {
@@ -43,12 +54,11 @@ function updateCanvas() {
     });
 }
 
-
 function drawTxt(txt, x, y) {
     gCtx.fillStyle = txt.color
     gCtx.strokeStyle = 'black'
     gCtx.textAlign = txt.align;
-    gCtx.lineWidth = 5
+    gCtx.lineWidth = txt.lineWidth
     gCtx.font = `${txt.size}px ${txt.font}`;
     gCtx.fillText(txt.line, x, y);
     gCtx.strokeText(txt.line, x, y);
@@ -97,31 +107,86 @@ function onChooseImg(imgId) {
     window.open('generator.html')
 }
 
-function updateTxt(txt, txtIdx) {
+function handleBtns(action) {
     var meme = getgMeme()
-    meme.txts[0].line = txt
-    updateCanvas()
 
-    // need to figure out idx usage
+    switch (action) {
+        case 'switch':
+            onSwitchTxt()
+            break;
+        case 'add':
+            onAddTxt()
+            break;
+        case 'remove':
+            onRemoveTxt()
+            break;
+        case 'increase':
+            changeSize(meme, action)
+            break;
+        case 'decrease':
+            changeSize(meme, action)
+            break;
+        case '':
 
+            break;
+
+        default:
+            break;
+    }
 }
-function handleEvent(el) {
-    gMeme.txts[0].size += 4
-    el.focus()
+
+function updateTxt(txt) {
+    var meme = getgMeme()
+    meme.txts[meme.selectedTxtIdx].line = txt
+    updateCanvas()
+}
+
+function changeSize(meme, action) {
+    if (action === 'increase') meme.txts[meme.selectedTxtIdx].size += 3
+    else meme.txts[meme.selectedTxtIdx].size -= 3
+    var size = meme.txts[meme.selectedTxtIdx].size
     updateCanvas()
     document.querySelector('.meme-txt').focus()
-    //figure out a way to not use this global every time
-    // 2moro will handle all events - mb switch case or short ifs..
-
 }
 
-function onAddTxt(){
-    addTxt(gCtx,gCanvas)
-    console.log(gMeme);
+function onAddTxt() {
+    addTxt(gCtx, gCanvas)
+    selectInput()
     updateCanvas()
-    
 }
 
+function onSwitchTxt() {
+    updateTxtIdx()
+    selectInput()
+}
+
+function selectInput() {
+    var meme = getgMeme()
+    var elInput = document.querySelector('.meme-txt')
+    elInput.value = meme.txts[meme.selectedTxtIdx].line
+    elInput.select()
+}
+
+function onRemoveTxt() {
+    removeTxt()
+    updateCanvas()
+}
+
+function changeFont(font) {
+    var meme = getgMeme()
+    meme.txts[meme.selectedTxtIdx].font = font
+    updateCanvas()
+    selectInput()
+
+}
+
+// function setFontData(size, fontFamily) {
+//     var fontData = gCtx.font.split(' ')
+//     size = + fontData[0].slice(0, -2)
+//     fontFamily = fontData[1]
+
+//     gCtx.font = `${size}` 
+// }
 
 
 

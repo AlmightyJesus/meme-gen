@@ -2,17 +2,6 @@
 var gNextId = 101
 var gImgs;
 var gMeme;
-// var gMeme = {
-//     selectedImgId: 5,
-//     selectedTxtIdx: 0,
-//     txts:
-//         [{
-//             line: 'I never eat Falafel',
-//             size: 70,
-//             align: 'left',
-//             color: 'red'
-//         }]
-// }
 
 function createImgs() {
     if (gImgs) gNextId = gImgs[gImgs.length - 1].id + 1;
@@ -39,36 +28,78 @@ function createImg(imgUrl, keywords) {
     }
 }
 
-function creategMeme(imgId) {
+function creategMeme(imgId, canvas) {
+    var size;
+    if(canvas.width <= 250) size = 20
+    if(canvas.width <= 350) size = 30
+    if(canvas.width <= 450) size = 40
+    else size = 50
     return {
         selectedImgId: imgId,
         selectedTxtIdx: 0,
         txts:
             [{
                 line: 'Enter text Here',
-                size: 50,
+                size,
                 align: 'left',
-                color: 'red',
+                color: 'white',
                 font: 'Impact',
-                lineWidth: 5,
+                lineWidth: 3,
                 locY: 60,
-                locX: 80
+                locX: 55
+            }, {
+                line: 'Enter text Here',
+                size,
+                align: 'left',
+                color: 'white',
+                font: 'Impact',
+                lineWidth: 3,
+                locY: canvas.height - 30,
+                locX: 55
             }]
     }
 }
 
 function addTxt(ctx, canvas) {
+    var txts = gMeme.txts
+    var locY = canvas.height / 2
+    var fontData = ctx.font.split(' ')
+    var size;
+    var font;
+    if (txts.length === 0) {
+        locY = 60
+        size = +fontData[0].slice(0, -2)
+        font = fontData[1]
+    }
+    else {
+        size = txts[txts.length - 1].size
+        font = txts[txts.length - 1].font
+    }
+    if (txts.length === 1) locY = canvas.height - 30
+    if (txts.length === 2) locY = canvas.height / 2
     var newTxt = {
         line: 'Enter text Here',
-        size: gMeme.txts[0].size,
+        size,
         align: ctx.textAlign,
-        color: ctx.fillStyle,
-        font: gMeme.txts[0].font,
+        color: 'white',
+        font,
         lineWidth: ctx.lineWidth,
-        locY: canvas.height - 30,
-        locX: 80
+        locY,
+        locX: 55
     }
     gMeme.txts.push(newTxt)
+    gMeme.selectedTxtIdx = txts.length - 1
+}
+
+function updateTxtIdx() {
+    var currTxtIdx = gMeme.selectedTxtIdx
+    currTxtIdx += 1
+    if (currTxtIdx > gMeme.txts.length - 1) currTxtIdx = 0
+    gMeme.selectedTxtIdx = currTxtIdx
+}
+
+function removeTxt() {
+    gMeme.txts.splice(gMeme.selectedTxtIdx, 1)
 }
 
 function saveImgData(imgData) {
@@ -86,3 +117,4 @@ function getImgs() {
 function getgMeme() {
     return gMeme
 }
+
