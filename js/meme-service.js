@@ -3,22 +3,23 @@ var gNextId = 101
 var gImgs;
 var gMeme;
 
+//created to enable adding img later
 function createImgs() {
     if (gImgs) gNextId = gImgs[gImgs.length - 1].id + 1;
     var imgs = [
-        createImg('img/img2.jpg', ['dance,', 'funny']),
-        createImg('img/9.jpg', ['baby,', 'funny', 'cruel']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/5.jpg', ['matrix,', 'funny']),
-        createImg('img/19.jpg', ['matrix,', 'funny']),
-        createImg('img/img4.jpg', ['matrix,', 'funny']),
-        createImg('img/Ancient-Aliens.jpg', ['matrix,', 'funny']),
-        createImg('img/img11.jpg', ['matrix,', 'funny']),
-        createImg('img/putin.jpg', ['matrix,', 'funny']),
-        createImg('img/leo.jpg', ['matrix,', 'funny']),
-        createImg('img/12.jpg', ['matrix,', 'funny']),
-        createImg('img/8.jpg', ['matrix,', 'funny']),
-        createImg('img/Oprah.jpg', ['matrix,', 'funny'])
+        createImg('img/img2.jpg', ['dance', 'funny']),
+        createImg('img/9.jpg', ['baby', 'funny', 'cruel']),
+        createImg('img/meme1.jpg', ['matrix', 'funny']),
+        createImg('img/5.jpg', ['baby', 'succsess']),
+        createImg('img/19.jpg', ['wtf']),
+        createImg('img/img4.jpg', ['trump', 'funny']),
+        createImg('img/Ancient-Aliens.jpg', ['aliens']),
+        createImg('img/img11.jpg', ['obama', 'funny', 'laugh']),
+        createImg('img/putin.jpg', ['putin', 'serious']),
+        createImg('img/leo.jpg', ['leo', 'honor']),
+        createImg('img/12.jpg', ['hecht', 'point']),
+        createImg('img/8.jpg', ['tell me more', 'funny']),
+        createImg('img/Oprah.jpg', ['oprah', 'funny'])
     ]
     gImgs = imgs
 }
@@ -46,7 +47,7 @@ function creategMeme(imgId, canvas) {
                 size,
                 align: 'center',
                 color: 'white',
-                outlineColor:'black',
+                outlineColor: 'black',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: 60,
@@ -56,7 +57,7 @@ function creategMeme(imgId, canvas) {
                 size,
                 align: 'center',
                 color: 'white',
-                outlineColor:'black',
+                outlineColor: 'black',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: canvas.height - 30,
@@ -87,7 +88,7 @@ function addTxt(ctx, canvas) {
         size,
         align: 'center',
         color: 'white',
-        outlineColor:'black',
+        outlineColor: 'black',
         font,
         lineWidth: ctx.lineWidth,
         locY,

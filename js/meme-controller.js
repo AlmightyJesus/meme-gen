@@ -244,10 +244,7 @@ function moveToGallery(){
 
 
 
-
-
-
-// for later - to enable text click to select idx and drag
+// for adding drag later
 // function canvasClicked(ev) {
 //     var meme = getgMeme()
 //     // console.log(ev.clientX);
