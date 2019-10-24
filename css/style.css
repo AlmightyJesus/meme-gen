@@ -163,6 +163,9 @@ footer p {
     display: flex;
     align-items: center;
 }
+.txt-design input{
+display: none;
+}
 
 .font-family {
     height: 70%;

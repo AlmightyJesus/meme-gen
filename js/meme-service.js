@@ -33,7 +33,7 @@ function createImg(imgUrl, keywords) {
 
 function creategMeme(imgId, canvas) {
     var size;
-    if (canvas.width <= 250) size = 20
+    if (canvas.width <= 250) size = 15
     if (canvas.width <= 350) size = 30
     if (canvas.width <= 450) size = 45
     else size = 50
@@ -46,6 +46,7 @@ function creategMeme(imgId, canvas) {
                 size,
                 align: 'center',
                 color: 'white',
+                outlineColor:'black',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: 60,
@@ -55,6 +56,7 @@ function creategMeme(imgId, canvas) {
                 size,
                 align: 'center',
                 color: 'white',
+                outlineColor:'black',
                 font: 'Impact',
                 lineWidth: 3,
                 locY: canvas.height - 30,
@@ -85,6 +87,7 @@ function addTxt(ctx, canvas) {
         size,
         align: 'center',
         color: 'white',
+        outlineColor:'black',
         font,
         lineWidth: ctx.lineWidth,
         locY,

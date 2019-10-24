@@ -56,7 +56,7 @@ function updateCanvas() {
 
 function drawTxt(txt, x, y) {
     gCtx.fillStyle = txt.color
-    gCtx.strokeStyle = 'black'
+    gCtx.strokeStyle = txt.outlineColor
     gCtx.textAlign = txt.align;
     gCtx.lineWidth = txt.lineWidth
     gCtx.font = `${txt.size}px ${txt.font}`;
@@ -214,7 +214,18 @@ function changeFont(font) {
     meme.txts[meme.selectedTxtIdx].font = font
     updateCanvas()
     showInput()
+}
 
+function changeStrokeColor(color){
+    var meme = getgMeme()
+    meme.txts[meme.selectedTxtIdx].outlineColor = color
+    updateCanvas()
+}
+
+function changeFillColor(color){
+    var meme = getgMeme()
+    meme.txts[meme.selectedTxtIdx].color = color
+    updateCanvas()
 }
 
 function moveImg(meme, action) {

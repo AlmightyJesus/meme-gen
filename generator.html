@@ -71,14 +71,16 @@
                         <option value="Arial">Arial</option>
                         <option value="Verdana">Verdana</option>
                     </select>
-                    <button class="btn"><img class="btn-img" src="img/icons/text stroke.png" alt=""></button>
-                    <button class="btn"><img class="btn-img" src="img/icons/paint-board-and-brush.png" alt=""></button>
+                    <label for="stroke" class="btn"><img class="btn-img" src="img/icons/text stroke.png"></label>
+                    <label for="fill" class="btn"><img class="btn-img" src="img/icons/paint-board-and-brush.png"></label>
+                    <input onchange="changeStrokeColor(this.value)" id="stroke" type="color">
+                    <input onchange="changeFillColor(this.value)" id="fill" type="color">
                 </div>
                 <div class="stickers panel-item">
                 </div>
                 <div class="btns">
                     <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareMeme(this, event)">
-                        <input name="img" id="imgData" type="hidden" />
+                        <input name="img" id="imgData" type="hidden"/>
                         <button class="share-container save-btn btn share" type="submit">Share</button>
                         <button class="btn download"><a class="download-link" onclick="downloadCanvas(this)"
                                 href="">Download</a></button>
