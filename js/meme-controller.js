@@ -135,6 +135,12 @@ function handleBtns(action) {
         case 'right':
             changeAlignment(meme, action)
             break;
+        case 'up':
+            moveImg(meme, action)
+            break;
+        case 'down':
+            moveImg(meme, action)
+            break;
 
         default:
             break;
@@ -179,19 +185,20 @@ function onRemoveTxt() {
 }
 
 function changeAlignment(meme, action) {
+    var x;
     if (action === 'left') {
-        meme.txts[meme.selectedTxtIdx].align = 'left'
-        meme.txts[meme.selectedTxtIdx].locX = 50
+        x = 50
     }
-    if (action === 'center') {
-        meme.txts[meme.selectedTxtIdx].align = 'center'
-        meme.txts[meme.selectedTxtIdx].locX = gCanvas.width / 2
+    else if (action === 'center') {
+        x = gCanvas.width / 2
     }
-    if (action === 'right') {
-        meme.txts[meme.selectedTxtIdx].align = 'right'
-        meme.txts[meme.selectedTxtIdx].locX = gCanvas.width - 50
+    else if (action === 'right') {
+        x = gCanvas.width - 50
     }
+    meme.txts[meme.selectedTxtIdx].align = action
+    meme.txts[meme.selectedTxtIdx].locX = x
     updateCanvas()
+    document.querySelector('.meme-txt').focus()
 }
 
 function changeFont(font) {
@@ -200,6 +207,16 @@ function changeFont(font) {
     updateCanvas()
     selectInput()
 
+}
+
+function moveImg(meme, action) {
+    var y;
+    if (action === 'up') {
+        y = -10
+    }
+    else y = 10
+    meme.txts[meme.selectedTxtIdx].locY += y
+    updateCanvas()
 }
 
 // function setFontData(size, fontFamily) {

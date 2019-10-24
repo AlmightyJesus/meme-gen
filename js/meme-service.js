@@ -9,13 +9,16 @@ function createImgs() {
         createImg('img/img2.jpg', ['dance,', 'funny']),
         createImg('img/9.jpg', ['baby,', 'funny', 'cruel']),
         createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny']),
-        createImg('img/meme1.jpg', ['matrix,', 'funny'])
-
+        createImg('img/5.jpg', ['matrix,', 'funny']),
+        createImg('img/19.jpg', ['matrix,', 'funny']),
+        createImg('img/img4.jpg', ['matrix,', 'funny']),
+        createImg('img/Ancient-Aliens.jpg', ['matrix,', 'funny']),
+        createImg('img/img11.jpg', ['matrix,', 'funny']),
+        createImg('img/putin.jpg', ['matrix,', 'funny']),
+        createImg('img/leo.jpg', ['matrix,', 'funny']),
+        createImg('img/12.jpg', ['matrix,', 'funny']),
+        createImg('img/8.jpg', ['matrix,', 'funny']),
+        createImg('img/Oprah.jpg', ['matrix,', 'funny'])
     ]
     gImgs = imgs
 }
@@ -30,9 +33,9 @@ function createImg(imgUrl, keywords) {
 
 function creategMeme(imgId, canvas) {
     var size;
-    if(canvas.width <= 250) size = 20
-    if(canvas.width <= 350) size = 30
-    if(canvas.width <= 450) size = 40
+    if (canvas.width <= 250) size = 20
+    if (canvas.width <= 350) size = 30
+    if (canvas.width <= 450) size = 45
     else size = 50
     return {
         selectedImgId: imgId,

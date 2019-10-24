@@ -12,25 +12,20 @@ body {
     max-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 header {
     width: 100%;
-    border: 1px solid black;
-    padding: 10px;
+    padding: 2px 10px;
     flex-grow: 3;
+    background-color: rgba(95, 46, 46, 0.431);
 }
 
 main {
-    background-color: rgb(211, 211, 211);
+    background-color: #E0D8DE;
     padding: 20px;
     flex-grow: 4;
-}
-
-.txt-mng-btns {
-    width: 50%;
-    display: flex;
-    justify-content: center;
 }
 
 .scroll {
@@ -42,14 +37,18 @@ footer {
     width: 100%;
     bottom: 0;
     flex-grow: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 footer p {
     margin: 0;
     padding: 10px;
+    text-align: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     main {
         height: 80%;
         padding: 5px;
@@ -84,16 +83,13 @@ footer p {
 .panel {
     width: 45%;
     height: 90%;
-    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
 }
 
-.panel-item {}
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     .container {
         flex-direction: column;
     }
@@ -121,6 +117,15 @@ footer p {
     }
 }
 
+@media screen and (max-width: 300px) {
+    .canvas-container {
+        width: 90%;
+    }
+    .panel {
+        width: 80%;
+    }
+}
+
 .meme-txt {
     width: 70%;
     border: 0;
@@ -137,16 +142,12 @@ footer p {
     margin: 5px;
     outline: none;
     cursor: pointer;
+    background-color: #BBCBCB;
+    border: 0;
 }
 
 .btn-img {
     width: 100%;
-}
-
-.txt-mng-btns {
-    width: 50%;
-    display: flex;
-    justify-content: center;
 }
 
 .share {
@@ -165,23 +166,22 @@ footer p {
 
 .font-family {
     height: 70%;
+    background-color: #BBCBCB;
     cursor: pointer;
+    outline: none;
+    border: 0;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     .meme-txt {
         width: 100%;
         margin-bottom: 3px;
     }
     .btn {
-        width: 2rem;
-        height: 2rem;
+        width: 2.2rem;
+        height: 2.2rem;
         margin: 3px;
         padding: 2px;
-    }
-    .txt-mng-btns {
-        width: 56%;
-        justify-content: space-between;
     }
     .share {
         width: 5rem;
@@ -206,11 +206,11 @@ footer p {
 
 .stickers {
     background-color: #fff;
-    width: 80%;
+    width: 70%;
     height: 80px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     .stickers {
         height: 40px;
         width: 100%;
@@ -240,29 +240,32 @@ footer p {
 
 @media screen and (max-width: 1300px) {
     .meme-img {
-        max-width: 25%;
-        object-fit: contain;
-        flex-grow: 1;
-        padding: 5px;
+        max-width: 20%;
     }
 }
 
 @media screen and (max-width: 900px) {
     .meme-img {
-        max-width: 33%;
-        object-fit: contain;
-        flex-grow: 1;
-        padding: 5px;
+        max-width: 25%;
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 750px) {
+    .meme-img {
+        max-width: 33%;
+    }
+}
+@media screen and (max-width: 640px) {
     .meme-img {
         max-width: 50%;
-        object-fit: contain;
-        flex-grow: 1;
-        padding: 5px;
     }
+}
+
+nav {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-ul {
@@ -272,9 +275,30 @@ footer p {
     margin: 0;
 }
 
+.logo {
+    max-width: 8%;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 200%;
+    height: 60%;
+    margin-left: 10px;
+}
+
+.logo-troll {
+    width: 100%;
+}
+
+@media screen and (max-width: 400px) {
+    .logo {
+        max-width: 10%;
+    }
+}
+
 .opening-gallery {
     display: flex;
-    /* background-color: cadetblue; */
     flex-wrap: wrap;
     width: 100%;
     height: 92%;
@@ -286,6 +310,19 @@ footer p {
     margin: 0;
 }
 
+.about-btn {
+    margin-left: 10px;
+}
+
+.nav-btn {
+    border-radius: 10px;
+}
+
 .hide {
     display: none;
+}
+
+@font-face {
+    font-family: 'anton';
+    src: url(../fonts/anton/Anton-Regular.ttf);
 }

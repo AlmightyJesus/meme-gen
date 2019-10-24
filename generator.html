@@ -12,9 +12,13 @@
 <body onload="initCanvas()">
     <header>
         <nav>
+            <aside class="logo">
+                <img class="logo-troll" src="img/icons/logo.png">
+                <img class="logo-img" src="img/LOGO/LOGO.png" alt="memegen">
+            </aside>
             <ul class="nav-ul">
-                <li><button>Gallery</button></li>
-                <li><button>About</button></li>
+                <li><button class="nav-btn">Gallery</button></li>
+                <li><button class="about-btn nav-btn">About</button></li>
             </ul>
         </nav>
     </header>
@@ -37,19 +41,28 @@
                 <input class="meme-txt panel-item" type="text" oninput="updateTxt(this.value)">
 
                 <div class="txt-mng-btns panel-item">
+                    <button onclick="handleBtns('up')" class="btn"><img class="btn-img" src="img/icons/up-arrow.png"
+                            alt=""></button>
+                    <button onclick="handleBtns('down')" class="btn"><img class="btn-img"
+                            src="img/icons/download-arrow.png" alt=""></button>
                     <button onclick="handleBtns('switch')" class="btn"><img class="btn-img"
                             src="img/icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""></button>
                     <button onclick="handleBtns('add')" class="btn"><img class="btn-img" src="img/icons/add.png"
                             alt=""></button>
-                    <button onclick="handleBtns('remove')" class="btn"><img class="btn-img" src="img/icons/trash.png" alt=""></button>
+                    <button onclick="handleBtns('remove')" class="btn"><img class="btn-img" src="img/icons/trash.png"
+                            alt=""></button>
                 </div>
                 <div class="txt-edit-btns panel-item">
                     <button onclick="handleBtns('increase')" class="btn"><img class="btn-img"
                             src="img/icons/increase font - icon.png" alt=""></button>
-                    <button onclick="handleBtns('decrease')" class="btn"><img class="btn-img" src="img/icons/decrease font - icon.png" alt=""></button>
-                    <button onclick="handleBtns('left')" class="btn"><img class="btn-img" src="img/icons/align-to-left.png" alt=""></button>
-                    <button onclick="handleBtns('center')" class="btn"><img class="btn-img" src="img/icons/center-text-alignment.png" alt=""></button>
-                    <button onclick="handleBtns('right')" class="btn"><img class="btn-img" src="img/icons/align-to-right.png" alt=""></button>
+                    <button onclick="handleBtns('decrease')" class="btn"><img class="btn-img"
+                            src="img/icons/decrease font - icon.png" alt=""></button>
+                    <button onclick="handleBtns('left')" class="btn"><img class="btn-img"
+                            src="img/icons/align-to-left.png" alt=""></button>
+                    <button onclick="handleBtns('center')" class="btn"><img class="btn-img"
+                            src="img/icons/center-text-alignment.png" alt=""></button>
+                    <button onclick="handleBtns('right')" class="btn"><img class="btn-img"
+                            src="img/icons/align-to-right.png" alt=""></button>
                 </div>
                 <div class="txt-design panel-item">
                     <select class="font-family" onchange="changeFont(this.value)" name="">
@@ -63,16 +76,18 @@
                 <div class="stickers panel-item">
                 </div>
                 <div class="btns">
-                    <button class="btn share">share</button>
-                    <button class="btn download"><a class="download-link" onclick="downloadCanvas(this)"
-                            href="">Download</a></button>
+                    <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareMeme(this, event)">
+                        <input name="img" id="imgData" type="hidden" />
+                        <button class="share-container save-btn btn share" type="submit">Share</button>
+                        <button class="btn download"><a class="download-link" onclick="downloadCanvas(this)"
+                                href="">Download</a></button>
                 </div>
                 <div class="imgs hide"></div>
             </section>
         </section>
     </main>
     <footer>
-        <p>all rights bla bla</p>
+        <p>© all rights bla bla</p>
     </footer>
     <script src="js/meme-utils.js"></script>
     <script src="js/meme-service.js"></script>
