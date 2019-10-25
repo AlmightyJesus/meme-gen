@@ -37,6 +37,7 @@ function creategMeme(imgId, canvas) {
     if (canvas.width <= 250) size = 15
     if (canvas.width <= 350) size = 30
     if (canvas.width <= 450) size = 45
+    if (canvas.width > 750) size = 60
     else size = 50
     return {
         selectedImgId: imgId,
@@ -51,7 +52,7 @@ function creategMeme(imgId, canvas) {
                 font: 'Impact',
                 lineWidth: 3,
                 locY: 60,
-                locX: canvas.width / 2
+                locX: canvas.width / 2,
             }, {
                 line: 'Enter text Here',
                 size,

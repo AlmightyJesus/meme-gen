@@ -2,6 +2,9 @@
 var gCanvas;
 var gCtx;
 var gImg;
+var gIsMouseDown = false
+var gStartX;
+var gStartY;
 
 function initCanvas() {
     var imgData = loadImgData()
@@ -15,15 +18,16 @@ function initCanvas() {
     drawImg(imgData.imgUrl)
     renderGallery()
     setCtx()
-    setInterval(() => {
+    setTimeout(() => {
         updateCanvas()
-    }, 100)
+    }, 150)
     showInput()
 }
 
 function setCtx() {
     gCtx.textAlign = 'center'
     gCtx.fillStyle = 'white'
+    gCtx.strokeStyle = 'black'
     gCtx.lineWidth = '3'
     gCtx.font = '30px Impact'
 }
@@ -62,6 +66,11 @@ function drawTxt(txt, x, y) {
     gCtx.font = `${txt.size}px ${txt.font}`;
     gCtx.fillText(txt.line, x, y);
     gCtx.strokeText(txt.line, x, y);
+    //// HERE
+    txt.width = gCtx.measureText(txt.line).width;
+    // console.log('width',txt.width);
+
+    txt.height = txt.size
 }
 
 function drawImg(imgUrl) {
@@ -156,7 +165,6 @@ function updateTxt(txt) {
 function changeSize(meme, action) {
     if (action === 'increase') meme.txts[meme.selectedTxtIdx].size += 3
     else meme.txts[meme.selectedTxtIdx].size -= 3
-    var size = meme.txts[meme.selectedTxtIdx].size
     updateCanvas()
     showInput()
 }
@@ -186,7 +194,6 @@ function showInput() {
 
 }
 
-
 function onRemoveTxt() {
     removeTxt()
     updateCanvas()
@@ -194,17 +201,12 @@ function onRemoveTxt() {
 
 function changeAlignment(meme, action) {
     var x;
-    if (action === 'left') {
-        x = 50
-    }
-    else if (action === 'center') {
-        x = gCanvas.width / 2
-    }
-    else if (action === 'right') {
-        x = gCanvas.width - 50
-    }
-    meme.txts[meme.selectedTxtIdx].align = action
-    meme.txts[meme.selectedTxtIdx].locX = x
+    var currTxt = meme.txts[meme.selectedTxtIdx]
+    if (action === 'left') x = 50
+    else if (action === 'center') x = gCanvas.width / 2
+    else if (action === 'right') x = gCanvas.width - 50
+    currTxt.align = action
+    currTxt.locX = x
     updateCanvas()
     showInput()
 }
@@ -216,13 +218,13 @@ function changeFont(font) {
     showInput()
 }
 
-function changeStrokeColor(color){
+function changeStrokeColor(color) {
     var meme = getgMeme()
     meme.txts[meme.selectedTxtIdx].outlineColor = color
     updateCanvas()
 }
 
-function changeFillColor(color){
+function changeFillColor(color) {
     var meme = getgMeme()
     meme.txts[meme.selectedTxtIdx].color = color
     updateCanvas()
@@ -238,35 +240,87 @@ function moveImg(meme, action) {
     updateCanvas()
 }
 
-function moveToGallery(){
+function moveToGallery() {
     window.open('index.html')
 }
 
+function handleMouseEv(ev) {
+    ev.preventDefault();
+    var meme = getgMeme()
+    var offsetX = gCanvas.offsetLeft;
+    var offsetY = gCanvas.offsetTop;
+
+    //considering alignment to determine txt location
+    function textHittest(x, y, txtIdx) {
+        var txt = meme.txts[txtIdx]
+        if (txt.align === 'left') {
+            return (x >= txt.locX && x <= txt.locX + txt.width && y >= txt.locY - txt.height && y <= txt.locY);
+        }
+        else if (txt.align === 'center') {
+            return (x >= txt.locX - (txt.width / 2) && x <= txt.locX + (txt.width / 2) && y >= txt.locY - txt.height && y <= txt.locY);
+        }
+        else return (x >= txt.locX - txt.width && x <= txt.locX && y >= txt.locY - txt.height && y <= txt.locY);
+    }
+
+    if (ev.type === 'mousedown' || ev.type === 'touchstart') {
+        //define gStarts for touch/mouse:
+        if (ev.type === 'mousedown') {
+            gStartX = parseInt(ev.clientX - offsetX);
+            gStartY = parseInt(ev.clientY - offsetY)
+        }
+        else if (ev.type === 'touchstart') {
+            gStartX = parseInt(ev.changedTouches[0].pageX - offsetX)
+            gStartY = parseInt(ev.changedTouches[0].pageY - offsetY)
+        }
 
 
-// for adding drag later
-// function canvasClicked(ev) {
-//     var meme = getgMeme()
-//     // console.log(ev.clientX);
-//     // console.log(ev.clientY);
-//     var txt = meme.txts[0]
-//     console.log(gCtx.measureText(txt));
-//     console.log(gMeme);
+        //makes sure that the txt is pressed on when dragging it
+        for (var i = 0; i < meme.txts.length; i++) {
+            if (textHittest(gStartX, gStartY, i)) {
+                meme.selectedTxtIdx = i;
+                gIsMouseDown = true
+                console.log(meme.selectedTxtIdx);
+                break;
+            }
+            else gIsMouseDown = false 
 
+        }
+    }
 
+    if (ev.type === 'mouseup' || ev.type === 'touchend' || ev.type === 'mouseleave') gIsMouseDown = false
 
-    // TODO: find out if clicked inside of star chart
-    // let clickedTxt = meme.txts.find(txt => {
-    //   return (
-    //     ev.clientX > txt.x &&
-    //     ev.clientX < txt.x + gBarWidth &&
-    //     ev.clientY > txt.y &&
-    //     ev.clientY < txt.y + txt.rate * gHeightFactor
-    //   )
-    // })
+    if (ev.type === 'mousemove') {
 
-    // TODO: open the modal on the clicked coordinates if found a click on a star,
-    //       close the modal otherwise
-    // if (clickedStar) openModal(clickedStar.name, clickedStar.rate, ev.clientX, ev.clientY)
-    // else closeModal()
-//   }
+        if (!gIsMouseDown) return
+        var txt = meme.txts[meme.selectedTxtIdx];
+        var mouseX = parseInt(ev.clientX - offsetX);
+        var mouseY = parseInt(ev.clientY - offsetY);
+        var dragX = mouseX - gStartX;
+        var dragY = mouseY - gStartY;
+        gStartX = mouseX;
+        gStartY = mouseY;
+        txt.locX += dragX;
+        txt.locY += dragY;
+        updateCanvas()
+    }
+}
+
+function dragWithTouch(ev) {
+    if (!gIsMouseDown) return
+    var rect = ev.target.getBoundingClientRect();
+    var bodyRect = document.body.getBoundingClientRect();
+    var x = ev.changedTouches[0].pageX - (rect.left - bodyRect.left);
+    var y = ev.changedTouches[0].pageY - (rect.top - bodyRect.top);
+    var touchX = parseInt(x);
+    var touchY = parseInt(y);
+    var dragX = touchX - gStartX;
+    var dragY = touchY - gStartY;
+    var meme = getgMeme()
+    var txt = meme.txts[meme.selectedTxtIdx];
+    gStartX = touchX;
+    gStartY = touchY;
+    txt.locX += dragX;
+    txt.locY += dragY;
+    updateCanvas()
+
+}

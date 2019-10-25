@@ -26,15 +26,14 @@
     <main>
         <section class="container">
             <section class="canvas-container">
-                <canvas id="my-canvas" width="100" height="100" onclick="canvasClicked(event)">
-                    <!-- onmousedown="startDrag()"
-                    onmouseup="finishDrag()"
-                    onmousemove="drag(event.offsetX,event.offsetY,event)"
-                    onmouseleave="finishDraw()"
-                    ontouchstart="startDrag()"
-                    ontouchend="finishDrag()"
-                    ontouchmove="recoverOffsetValues(event)"
-                    > -->
+                <canvas id="my-canvas" width="100" height="100" onclick="handleMouseEv(event)"
+                    onmousedown="handleMouseEv(event)"handleMouseEv(event)
+                    onmouseup="handleMouseEv(event)"
+                    onmousemove="handleMouseEv(event)"
+                    onmouseleave="handleMouseEv(event)"
+                    ontouchstart="handleMouseEv(event)"
+                    ontouchend="handleMouseEv(event)"
+                    ontouchmove="dragWithTouch(event)">
                     its 2019 plz use google chrome
                 </canvas>
             </section>
@@ -98,3 +97,4 @@
 </body>
 
 </html>
+
