@@ -19,6 +19,12 @@ function createImgs() {
         createImg('img/leo.jpg', ['leo', 'honor']),
         createImg('img/12.jpg', ['hecht', 'point']),
         createImg('img/8.jpg', ['tell me more', 'funny']),
+        createImg('img/006.jpg', ['cat', 'sleepy']),
+        createImg('img/one.jpg', ['simply', 'funny']),
+        createImg('img/patrick.jpg', ['patrick', 'funny']),
+        createImg('img/X-Everywhere.jpg', ['everywhere', 'funny']),
+        createImg('img/img5.jpg', ['baby', 'funny']),
+        createImg('img/drevil.jpg', ['evil', 'funny']),
         createImg('img/Oprah.jpg', ['oprah', 'funny'])
     ]
     gImgs = imgs
@@ -31,14 +37,14 @@ function createImg(imgUrl, keywords) {
         keywords
     }
 }
-
+    
 function creategMeme(imgId, canvas) {
     var size;
-    if (canvas.width <= 250) size = 15
-    if (canvas.width <= 350) size = 30
-    if (canvas.width <= 450) size = 45
-    if (canvas.width > 750) size = 60
-    else size = 50
+    if (canvas.width <= 250) size = 25
+    else if (canvas.width <= 350) size = 40
+    else if (canvas.width <= 450) size = 50
+    else if (canvas.width > 750) size = 60
+    else size = 65
     return {
         selectedImgId: imgId,
         selectedTxtIdx: 0,
@@ -83,7 +89,7 @@ function addTxt(ctx, canvas) {
         font = txts[txts.length - 1].font
     }
     if (txts.length === 1) locY = canvas.height - 30
-    if (txts.length === 2) locY = canvas.height / 2
+    else if (txts.length === 2) locY = canvas.height / 2
     var newTxt = {
         line: 'Enter text Here',
         size,

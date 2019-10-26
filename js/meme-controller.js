@@ -5,6 +5,7 @@ var gImg;
 var gIsMouseDown = false
 var gStartX;
 var gStartY;
+var gTimerTimeout;
 
 function initCanvas() {
     var imgData = loadImgData()
@@ -14,13 +15,11 @@ function initCanvas() {
     for (let i = 0; i < 7; i++) {
         resizeCanvas()
     }
-    gMeme = creategMeme(imgData.id, gCanvas)
     drawImg(imgData.imgUrl)
+    gMeme = creategMeme(imgData.id, gCanvas)
     renderGallery()
     setCtx()
-    setTimeout(() => {
-        updateCanvas()
-    }, 150)
+    setTimeout(updateCanvas, 200)
     showInput()
 }
 
@@ -51,9 +50,10 @@ function resizeCanvas() {
 }
 
 function updateCanvas() {
+    var meme = getgMeme()
     gCtx.drawImage(gImg, 0, 0, gCanvas.width, gCanvas.height);
 
-    gMeme.txts.forEach(function (txt) {
+    meme.txts.forEach(txt => {
         drawTxt(txt, txt.locX, txt.locY);
     });
 }
@@ -63,14 +63,22 @@ function drawTxt(txt, x, y) {
     gCtx.strokeStyle = txt.outlineColor
     gCtx.textAlign = txt.align;
     gCtx.lineWidth = txt.lineWidth
+    gCtx.setLineDash([0]);
     gCtx.font = `${txt.size}px ${txt.font}`;
     gCtx.fillText(txt.line, x, y);
     gCtx.strokeText(txt.line, x, y);
-    //// HERE
     txt.width = gCtx.measureText(txt.line).width;
-    // console.log('width',txt.width);
-
     txt.height = txt.size
+}
+
+function drawRect(startX, startY, endX, endY) {
+    gCtx.beginPath()
+    gCtx.setLineDash([8]);
+    gCtx.rect(startX, startY, endX, endY)
+    gCtx.lineWidth = 2
+    gCtx.strokeStyle = 'white'
+    gCtx.stroke()
+    gCtx.closePath()
 }
 
 function drawImg(imgUrl) {
@@ -93,28 +101,49 @@ function renderGallery() {
     var elImgsContainer = document.querySelector('.imgs')
     var strHTMLs = imgs.map(img =>
         `<img class="meme-gallery-img" src="${img.imgUrl}" alt="${img.keywords.join('')}"
-        onclick="onChooseImg(${img.id})">`
+        onclick="onChooseImg(${img.id},'change')">`
     )
     elImgsContainer.innerHTML = strHTMLs.join('')
 }
+
+function toggleGallery() {
+    var items = document.querySelectorAll('.panel-item')
+    for (let i = 0; i < items.length; i++) {
+        items[i].classList.toggle('hide')
+    }
+    document.querySelector('.btns').classList.toggle('hide')
+    document.querySelector('.panel').classList.toggle('scroll')
+    document.querySelector('.imgs').classList.toggle('hide')
+    setTimeout(() => {
+        document.querySelector('.imgs').classList.toggle('img-hide')
+
+    }, 1);
+}
+
 
 function renderImgs() {
     var imgs = getImgs()
     var elImgsContainer = document.querySelector('.opening-gallery')
     var strHTMLs = imgs.map(img =>
         `<img class="meme-img" src="${img.imgUrl}" alt="${img.keywords.join('')}"
-        onclick="onChooseImg(${img.id})">`
+        onclick="onChooseImg(${img.id},'choose')">`
     )
     elImgsContainer.innerHTML = strHTMLs.join('')
 }
 
-function onChooseImg(imgId) {
+function onChooseImg(imgId, action) {
     var imgs = getImgs()
     var img = imgs.find(img => img.id === imgId)
     var imgData = { imgUrl: img.imgUrl, id: imgId }
     saveImgData(imgData)
-    window.open('generator.html')
+    if (action === 'choose') window.open('generator.html')
+    else if (action === 'change') {
+        drawImg(img.imgUrl)
+        setTimeout(updateCanvas, 50)
+        toggleGallery()
+    }
 }
+
 
 function handleBtns(action) {
     var meme = getgMeme()
@@ -176,7 +205,38 @@ function onAddTxt() {
 }
 
 function onSwitchTxt() {
+    var meme = getgMeme()
     updateTxtIdx()
+    var txt = meme.txts[meme.selectedTxtIdx]
+    markTxt(txt)
+    showInput()
+}
+
+//mark text on select
+function markTxt(txt) {
+    updateCanvas()
+    clearTimeout(gTimerTimeout)
+    let startX;
+    let startY;
+    let endX = (txt.width) + 10
+    let endY = (txt.height) + 5
+    if (txt.align === 'left') {
+        startX = txt.locX - 5;
+        startY = txt.locY - txt.height + 5;
+    }
+    else if (txt.align === 'center') {
+        startX = txt.locX - (txt.width / 2) - 5;
+        startY = txt.locY - txt.height + 5;
+    }
+    else {
+        startX = txt.locX - (txt.width) - 5;
+        startY = txt.locY - (txt.height) + 5;
+    }
+    drawRect(startX, startY, endX, endY)
+    gTimerTimeout = setTimeout(() => {
+        gCtx.clearRect(startX, startY, endX, endY)
+        updateCanvas()
+    }, 3000);
     showInput()
 }
 
@@ -222,12 +282,23 @@ function changeStrokeColor(color) {
     var meme = getgMeme()
     meme.txts[meme.selectedTxtIdx].outlineColor = color
     updateCanvas()
+    document.querySelector('#stroke').value = "#ffffff"
 }
 
 function changeFillColor(color) {
     var meme = getgMeme()
     meme.txts[meme.selectedTxtIdx].color = color
     updateCanvas()
+    document.querySelector('#fill').value = "#ffffff"
+}
+
+//not implemented no time :/
+function drawSticker(imgUrl) {
+    var img = new Image();
+    img.src = imgUrl
+    img.onload = () => {
+        gCtx.drawImage(img, 30, 30, 100, 100)
+    }
 }
 
 function moveImg(meme, action) {
@@ -244,6 +315,7 @@ function moveToGallery() {
     window.open('index.html')
 }
 
+//drag & drop control
 function handleMouseEv(ev) {
     ev.preventDefault();
     var meme = getgMeme()
@@ -253,13 +325,23 @@ function handleMouseEv(ev) {
     //considering alignment to determine txt location
     function textHittest(x, y, txtIdx) {
         var txt = meme.txts[txtIdx]
+        let startX;
+        let startY = txt.locY - txt.height
+        let endX;
+        let endY = txt.locY
         if (txt.align === 'left') {
-            return (x >= txt.locX && x <= txt.locX + txt.width && y >= txt.locY - txt.height && y <= txt.locY);
+            startX = txt.locX
+            endX = txt.locX + txt.width
         }
         else if (txt.align === 'center') {
-            return (x >= txt.locX - (txt.width / 2) && x <= txt.locX + (txt.width / 2) && y >= txt.locY - txt.height && y <= txt.locY);
+            startX = txt.locX - (txt.width / 2)
+            endX = txt.locX + (txt.width / 2)
         }
-        else return (x >= txt.locX - txt.width && x <= txt.locX && y >= txt.locY - txt.height && y <= txt.locY);
+        else {
+            startX = txt.locX - txt.width
+            endX = txt.locX
+        }
+        return (x >= startX && x <= endX && y >= startY && y <= endY);
     }
 
     if (ev.type === 'mousedown' || ev.type === 'touchstart') {
@@ -278,11 +360,11 @@ function handleMouseEv(ev) {
         for (var i = 0; i < meme.txts.length; i++) {
             if (textHittest(gStartX, gStartY, i)) {
                 meme.selectedTxtIdx = i;
+                markTxt(meme.txts[meme.selectedTxtIdx])
                 gIsMouseDown = true
-                console.log(meme.selectedTxtIdx);
                 break;
             }
-            else gIsMouseDown = false 
+            else gIsMouseDown = false
 
         }
     }
@@ -292,6 +374,7 @@ function handleMouseEv(ev) {
     if (ev.type === 'mousemove') {
 
         if (!gIsMouseDown) return
+
         var txt = meme.txts[meme.selectedTxtIdx];
         var mouseX = parseInt(ev.clientX - offsetX);
         var mouseY = parseInt(ev.clientY - offsetY);
@@ -305,6 +388,7 @@ function handleMouseEv(ev) {
     }
 }
 
+// also touch supported :D
 function dragWithTouch(ev) {
     if (!gIsMouseDown) return
     var rect = ev.target.getBoundingClientRect();
@@ -322,5 +406,4 @@ function dragWithTouch(ev) {
     txt.locX += dragX;
     txt.locY += dragY;
     updateCanvas()
-
 }

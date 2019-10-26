@@ -19,7 +19,7 @@
             <ul class="nav-ul">
 
                 <li><button onclick="moveToGallery()" class="nav-btn">Gallery</button></li>
-                <li><button class="about-btn nav-btn">About</button></li>
+                <li><button onclick="location.href='#popup1'" class="about-btn nav-btn">About</button></li>
             </ul>
         </nav>
     </header>
@@ -30,6 +30,16 @@
     <footer>
         <p>all rights bla bla</p>
     </footer>
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <h2>Here I am</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <img class="modal-img" src="img/jeezus.jpg">
+                <h3>SHALOM SALAM PEACE enjoy makin some memez</h3>
+            </div>
+        </div>
+    </div>
     <script src="js/meme-utils.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-controller.js"></script>
