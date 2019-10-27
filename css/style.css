@@ -240,6 +240,7 @@ footer p {
     overflow-x: scroll;
     flex-direction: column;
     flex-wrap: wrap;
+    cursor: pointer;
 }
 
 .sticker {
@@ -350,10 +351,12 @@ nav {
     width: 200%;
     height: 60%;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .logo-troll {
     width: 100%;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 400px) {

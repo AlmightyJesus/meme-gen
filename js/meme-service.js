@@ -37,7 +37,11 @@ function createImg(imgUrl, keywords) {
         keywords
     }
 }
-    
+
+function changeGmemeProp(key, val) {
+    gMeme.txts[gMeme.selectedTxtIdx][key] = val
+}
+
 function creategMeme(imgId, canvas) {
     var size;
     if (canvas.width <= 250) size = 25
@@ -48,6 +52,8 @@ function creategMeme(imgId, canvas) {
     return {
         selectedImgId: imgId,
         selectedTxtIdx: 0,
+        selectedStickerIdx: 0,
+        stickers: [],
         txts:
             [{
                 line: 'Enter text Here',
@@ -72,7 +78,7 @@ function creategMeme(imgId, canvas) {
             }]
     }
 }
-
+//change canvas and ctx to only the value thats sent
 function addTxt(ctx, canvas) {
     var txts = gMeme.txts
     var locY = canvas.height / 2
@@ -97,12 +103,26 @@ function addTxt(ctx, canvas) {
         color: 'white',
         outlineColor: 'black',
         font,
-        lineWidth: ctx.lineWidth,
+        lineWidth: 3,
         locY,
         locX: canvas.width / 2
     }
     gMeme.txts.push(newTxt)
     gMeme.selectedTxtIdx = txts.length - 1
+}
+
+function addSticker(stickerImg) {
+    var sticker = {
+        stickerImg,
+        locX: 30,
+        locY: 30,
+        endX: 130,
+        endY: 130,
+        isSticker: true
+    }
+    sticker.width = sticker.endX - sticker.locX
+    sticker.height = sticker.endY - sticker.locY
+    gMeme.stickers.push(sticker)
 }
 
 function updateTxtIdx() {
@@ -112,9 +132,19 @@ function updateTxtIdx() {
     gMeme.selectedTxtIdx = currTxtIdx
 }
 
-function removeTxt() {
-    gMeme.txts.splice(gMeme.selectedTxtIdx, 1)
+function removeItem(item) {
+    if (item.isSticker) {
+        gMeme.stickers.splice(gMeme.selectedStickerIdx, 1)
+        return
+    }
+    else {
+        gMeme.txts.splice(gMeme.selectedTxtIdx, 1)
+        // if (gMeme.txts.length >= 0) 
+        gMeme.selectedTxtIdx = ''
+        // else return  
+    }
 }
+
 
 function saveImgData(imgData) {
     saveToStorage('img-Data', imgData)

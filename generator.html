@@ -13,8 +13,8 @@
     <header>
         <nav>
             <aside class="logo">
-                <img class="logo-troll" src="img/icons/logo.png">
-                <img class="logo-img" src="img/LOGO/LOGO.png" alt="memegen">
+                <img onclick="moveToTroll()" class="logo-troll" src="img/icons/logo.png">
+                <img onclick="moveToGallery()" class="logo-img" src="img/LOGO/LOGO.png" alt="memegen">
             </aside>
             <ul class="nav-ul">
                 <li><button onclick="toggleGallery()" class="nav-btn">Gallery</button></li>
@@ -34,7 +34,8 @@
                 </canvas>
             </section>
             <section class="panel">
-                <input class="meme-txt panel-item" type="text" oninput="updateTxt(this.value)">
+                <input class="meme-txt panel-item" type="text" onclick="onSelectTxt(this)"
+                    oninput="updateTxt(this.value)">
 
                 <div class="txt-mng-btns panel-item">
                     <button onclick="handleBtns('up')" class="btn"><img class="btn-img" src="img/icons/up-arrow.png"
@@ -72,25 +73,13 @@
                     <input oninput="changeStrokeColor(this.value)" id="stroke" type="color">
                     <input oninput="changeFillColor(this.value)" id="fill" type="color">
                 </div>
-                <div class="stickers panel-item">
-                    <img onclick="drawSticker('img/stickers/0.png')" class="sticker" src="img/stickers/0.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/7.png')" class="sticker" src="img/stickers/7.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/9.png')" class="sticker" src="img/stickers/9.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/5.png')" class="sticker" src="img/stickers/5.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/6.png')" class="sticker" src="img/stickers/6.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/1.png')" class="sticker" src="img/stickers/1.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/2.png')" class="sticker" src="img/stickers/2.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/3.png')" class="sticker" src="img/stickers/3.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/4.png')" class="sticker" src="img/stickers/4.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/8.png')" class="sticker" src="img/stickers/8.png" alt="meme template">
-                    <img onclick="drawSticker('img/stickers/10.png')" class="sticker" src="img/stickers/10.png" alt="meme template">
-                </div>
+                <div class="stickers panel-item"></div>
                 <div class="btns">
                     <form action="" method="POST" enctype="multipart/form-data" onsubmit="onShareMeme(this, event)">
                         <input name="img" id="imgData" type="hidden" />
                         <button class="share-container save-btn btn share" type="submit">Share</button>
                         <button class="btn download"><a class="download-link" onclick="downloadCanvas(this)"
-                                href="">Download</a></button>
+                                href="#">Download</a></button>
                 </div>
                 <div class="imgs hide img-hide"></div>
             </section>

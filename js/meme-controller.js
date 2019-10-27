@@ -6,6 +6,7 @@ var gIsMouseDown = false
 var gStartX;
 var gStartY;
 var gTimerTimeout;
+var gSelectedItem = '';
 
 function initCanvas() {
     var imgData = loadImgData()
@@ -15,9 +16,11 @@ function initCanvas() {
     for (let i = 0; i < 7; i++) {
         resizeCanvas()
     }
-    drawImg(imgData.imgUrl)
+    // seperate controller from service 
     gMeme = creategMeme(imgData.id, gCanvas)
+    drawImg(imgData.imgUrl)
     renderGallery()
+    renderStickers()
     setCtx()
     setTimeout(updateCanvas, 200)
     showInput()
@@ -49,13 +52,16 @@ function resizeCanvas() {
     gCanvas.height = elContainer.offsetHeight
 }
 
-function updateCanvas() {
+function updateCanvas(isMark) {
     var meme = getgMeme()
     gCtx.drawImage(gImg, 0, 0, gCanvas.width, gCanvas.height);
-
     meme.txts.forEach(txt => {
         drawTxt(txt, txt.locX, txt.locY);
     });
+    meme.stickers.forEach(sticker => {
+        drawSticker(sticker);
+    });
+    if (!isMark) markSelectedItem(gSelectedItem)
 }
 
 function drawTxt(txt, x, y) {
@@ -91,6 +97,7 @@ function drawImg(imgUrl) {
 }
 
 function downloadCanvas(elLink) {
+    updateCanvas(true)
     const data = gCanvas.toDataURL()
     elLink.href = data
     elLink.download = 'Nice-Canvas.jpg'
@@ -106,6 +113,14 @@ function renderGallery() {
     elImgsContainer.innerHTML = strHTMLs.join('')
 }
 
+function renderStickers() {
+    var strHTMLs = ''
+    for (let i = 0; i <= 10; i++) {
+        strHTMLs += `<img onclick="onAddSticker('img/stickers/${i}.png')" class="sticker" src="img/stickers/${i}.png" alt="meme sticker"></img>`
+    }
+    document.querySelector('.stickers').innerHTML = strHTMLs
+}
+
 function toggleGallery() {
     var items = document.querySelectorAll('.panel-item')
     for (let i = 0; i < items.length; i++) {
@@ -116,7 +131,6 @@ function toggleGallery() {
     document.querySelector('.imgs').classList.toggle('hide')
     setTimeout(() => {
         document.querySelector('.imgs').classList.toggle('img-hide')
-
     }, 1);
 }
 
@@ -156,7 +170,7 @@ function handleBtns(action) {
             onAddTxt()
             break;
         case 'remove':
-            onRemoveTxt()
+            onRemoveItem()
             break;
         case 'increase':
             changeSize(meme, action)
@@ -192,10 +206,21 @@ function updateTxt(txt) {
 }
 
 function changeSize(meme, action) {
-    if (action === 'increase') meme.txts[meme.selectedTxtIdx].size += 3
-    else meme.txts[meme.selectedTxtIdx].size -= 3
+    var x;
+    if (gSelectedItem.line) {
+        (action === 'increase') ? x = 3 : x = -3
+        gSelectedItem.size += x
+        showInput()
+    }
+    else {
+        (action === 'increase') ? x = 7 : x = -7
+        gSelectedItem.width += x
+        gSelectedItem.height += x
+        gSelectedItem.endX += x
+        gSelectedItem.endY += x
+    }
     updateCanvas()
-    showInput()
+    
 }
 
 function onAddTxt() {
@@ -208,36 +233,46 @@ function onSwitchTxt() {
     var meme = getgMeme()
     updateTxtIdx()
     var txt = meme.txts[meme.selectedTxtIdx]
-    markTxt(txt)
+    markSelectedItem(txt)
     showInput()
 }
 
-//mark text on select
-function markTxt(txt) {
-    updateCanvas()
+//mark item on select
+//gotta fix the rule - no need to check all the stuff if sticker !
+function markSelectedItem(txt) {
+    updateCanvas(true)
     clearTimeout(gTimerTimeout)
     let startX;
     let startY;
-    let endX = (txt.width) + 10
-    let endY = (txt.height) + 5
-    if (txt.align === 'left') {
-        startX = txt.locX - 5;
-        startY = txt.locY - txt.height + 5;
-    }
-    else if (txt.align === 'center') {
-        startX = txt.locX - (txt.width / 2) - 5;
-        startY = txt.locY - txt.height + 5;
+    if (gSelectedItem.isSticker) {
+        startX = gSelectedItem.locX
+        startY = gSelectedItem.locY
+        endX = gSelectedItem.width + 10
+        endY = gSelectedItem.height + 5
     }
     else {
-        startX = txt.locX - (txt.width) - 5;
-        startY = txt.locY - (txt.height) + 5;
+        var endX = (txt.width) + 10
+        var endY = (txt.height) + 5
+        if (txt.align === 'left') {
+            startX = txt.locX - 5;
+            startY = txt.locY - txt.height + 5;
+        }
+        else if (txt.align === 'center') {
+            startX = txt.locX - (txt.width / 2) - 5;
+            startY = txt.locY - txt.height + 5;
+        }
+        else {
+            startX = txt.locX - (txt.width) - 5;
+            startY = txt.locY - (txt.height) + 5;
+        }
+        showInput()
     }
-    drawRect(startX, startY, endX, endY)
+
+    drawRect(startX, startY, endX, endY, txt)
     gTimerTimeout = setTimeout(() => {
         gCtx.clearRect(startX, startY, endX, endY)
-        updateCanvas()
+        updateCanvas(true)
     }, 3000);
-    showInput()
 }
 
 function selectInput() {
@@ -251,12 +286,13 @@ function showInput() {
     var meme = getgMeme()
     var elInput = document.querySelector('.meme-txt')
     elInput.value = meme.txts[meme.selectedTxtIdx].line
-
 }
 
-function onRemoveTxt() {
-    removeTxt()
-    updateCanvas()
+function onRemoveItem() {
+    removeItem(gSelectedItem)
+    document.querySelector('.meme-txt').value = ''
+    gSelectedItem = ''
+    updateCanvas(true)
 }
 
 function changeAlignment(meme, action) {
@@ -278,9 +314,12 @@ function changeFont(font) {
     showInput()
 }
 
+function changeProp(key, val){
+    changeGmemeProp(key, val)
+}
+
 function changeStrokeColor(color) {
-    var meme = getgMeme()
-    meme.txts[meme.selectedTxtIdx].outlineColor = color
+    changeGmemeProp('outlineColor', color)
     updateCanvas()
     document.querySelector('#stroke').value = "#ffffff"
 }
@@ -292,13 +331,19 @@ function changeFillColor(color) {
     document.querySelector('#fill').value = "#ffffff"
 }
 
-//not implemented no time :/
-function drawSticker(imgUrl) {
-    var img = new Image();
-    img.src = imgUrl
-    img.onload = () => {
-        gCtx.drawImage(img, 30, 30, 100, 100)
+function onAddSticker(stickerUrl) {
+    var meme = getgMeme()
+    var sticker = new Image();
+    sticker.src = stickerUrl
+    addSticker(sticker)
+    meme.selectedStickerIdx = meme.stickers.length - 1
+    sticker.onload = () => {
+        drawSticker(meme.stickers[meme.selectedStickerIdx])
     }
+}
+
+function drawSticker(sticker) {
+    gCtx.drawImage(sticker.stickerImg, sticker.locX, sticker.locY, sticker.width, sticker.height)
 }
 
 function moveImg(meme, action) {
@@ -314,16 +359,25 @@ function moveImg(meme, action) {
 function moveToGallery() {
     window.open('index.html')
 }
+function moveToTroll() {
+    window.open('http://www.prankspace.com/')
+}
+
+function onSelectTxt(elInput) {
+    elInput.select()
+}
 
 //drag & drop control
 function handleMouseEv(ev) {
+
     ev.preventDefault();
     var meme = getgMeme()
     var offsetX = gCanvas.offsetLeft;
     var offsetY = gCanvas.offsetTop;
 
     //considering alignment to determine txt location
-    function textHittest(x, y, txtIdx) {
+    function txtHitTest(x, y, txtIdx) {
+        if (txtIdx + 1 > meme.txts.length) return
         var txt = meme.txts[txtIdx]
         let startX;
         let startY = txt.locY - txt.height
@@ -344,6 +398,13 @@ function handleMouseEv(ev) {
         return (x >= startX && x <= endX && y >= startY && y <= endY);
     }
 
+    function stickerHitTest(x, y, idx) {
+        if (idx + 1 > meme.stickers.length) return
+        var sticker = meme.stickers[idx]
+
+        return (x >= sticker.locX && x <= sticker.endX && y >= sticker.locY && y <= sticker.endY);
+    }
+
     if (ev.type === 'mousedown' || ev.type === 'touchstart') {
         //define gStarts for touch/mouse:
         if (ev.type === 'mousedown') {
@@ -355,17 +416,24 @@ function handleMouseEv(ev) {
             gStartY = parseInt(ev.changedTouches[0].pageY - offsetY)
         }
 
-
         //makes sure that the txt is pressed on when dragging it
-        for (var i = 0; i < meme.txts.length; i++) {
-            if (textHittest(gStartX, gStartY, i)) {
+        for (var i = 0; i < meme.txts.length + meme.stickers.length; i++) {
+            if (txtHitTest(gStartX, gStartY, i)) {
                 meme.selectedTxtIdx = i;
-                markTxt(meme.txts[meme.selectedTxtIdx])
+                gSelectedItem = meme.txts[meme.selectedTxtIdx]
+                //try to take those outside
+                markSelectedItem(gSelectedItem)
+                gIsMouseDown = true
+                break;
+            }
+            else if (stickerHitTest(gStartX, gStartY, i)) {
+                meme.selectedStickerIdx = i
+                gSelectedItem = meme.stickers[meme.selectedStickerIdx];
+                markSelectedItem(gSelectedItem)
                 gIsMouseDown = true
                 break;
             }
             else gIsMouseDown = false
-
         }
     }
 
@@ -375,15 +443,19 @@ function handleMouseEv(ev) {
 
         if (!gIsMouseDown) return
 
-        var txt = meme.txts[meme.selectedTxtIdx];
+        // var txt = meme.txts[meme.selectedTxtIdx];
         var mouseX = parseInt(ev.clientX - offsetX);
         var mouseY = parseInt(ev.clientY - offsetY);
         var dragX = mouseX - gStartX;
         var dragY = mouseY - gStartY;
         gStartX = mouseX;
         gStartY = mouseY;
-        txt.locX += dragX;
-        txt.locY += dragY;
+        gSelectedItem.locX += dragX;
+        gSelectedItem.locY += dragY;
+        if (gSelectedItem.isSticker) {
+            gSelectedItem.endX += dragX;
+            gSelectedItem.endY += dragY;
+        }
         updateCanvas()
     }
 }
@@ -399,11 +471,13 @@ function dragWithTouch(ev) {
     var touchY = parseInt(y);
     var dragX = touchX - gStartX;
     var dragY = touchY - gStartY;
-    var meme = getgMeme()
-    var txt = meme.txts[meme.selectedTxtIdx];
     gStartX = touchX;
     gStartY = touchY;
-    txt.locX += dragX;
-    txt.locY += dragY;
+    gSelectedItem.locX += dragX;
+    gSelectedItem.locY += dragY;
+    if (gSelectedItem.isSticker) {
+        gSelectedItem.endX += dragX;
+        gSelectedItem.endY += dragY;
+    }
     updateCanvas()
 }
