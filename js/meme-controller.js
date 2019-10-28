@@ -220,7 +220,7 @@ function changeSize(meme, action) {
         gSelectedItem.endY += x
     }
     updateCanvas()
-    
+
 }
 
 function onAddTxt() {
@@ -314,7 +314,7 @@ function changeFont(font) {
     showInput()
 }
 
-function changeProp(key, val){
+function changeProp(key, val) {
     changeGmemeProp(key, val)
 }
 
@@ -433,7 +433,10 @@ function handleMouseEv(ev) {
                 gIsMouseDown = true
                 break;
             }
-            else gIsMouseDown = false
+            else {
+                updateCanvas(true)
+                gIsMouseDown = false
+            }
         }
     }
 
